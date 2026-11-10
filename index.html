@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>С нашей годовщиной!♡´-</title>
+    <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+<script type="text/javascript" src="https://gc.kis.v2.scr.kaspersky-labs.com/FD126C42-EBFA-4E12-B309-BB3FDD723AC1/main.js?attr=1UZcrt4PbTpq1fPLs-pH07-FBT5JAU1QUhO9S05Ecp87GVAOcTPk_S6Ng14dQazNNpSZesfuU4CRbELtuiGNIDF-jd5vTVipgrQVhu1WMkXis0ufMsqXdbjTXoAM322VhH82JU9u6N_i2xpP4dz68eRJ2JVBouX66YcDaM3C4eYuvPawVcBkn_nt--6jaRwzIhSt3y9Yod8YMBJNzrTgaXugQSLFMwMytnmdAky-ywYMCj7gzWNVqK5aBbEHuy-M6TUMOntin_DSV-xZML1AwA0vISe9ZZU5eMvI8pcbQj5C1YmXBrMcQztwB4ubujr9" charset="UTF-8"></script></head>
+<body>
+
+    <div id="bg-layer"></div>
+
+    <div id="screen-lock" class="screen active">
+        
+        <!-- ТВОЯ АВАТАРКА (реагирует на пароль и мышку) -->
+        <img id="lock-avatar" src="assets/avatar-idle.png" alt="My Avatar" style="width: 130px; height: 130px; object-fit: contain; margin-bottom: 10px; cursor: pointer; transition: transform 0.2s;">
+        
+        <!-- Текст теперь имеет id="hint-text", чтобы скрипт мог его менять -->
+        <h2 id="hint-text" style="font-size: 14px; margin-bottom: 20px; text-align: center; line-height: 1.5;">Введи пароль</h2>
+        
+        <div class="password-display" id="pwd-display">____</div>
+        <div class="keypad">
+            <button class="key" onclick="pressKey(1)">1</button>
+            <button class="key" onclick="pressKey(2)">2</button>
+            <button class="key" onclick="pressKey(3)">3</button>
+            <button class="key" onclick="pressKey(4)">4</button>
+            <button class="key" onclick="pressKey(5)">5</button>
+            <button class="key" onclick="pressKey(6)">6</button>
+            <button class="key" onclick="pressKey(7)">7</button>
+            <button class="key" onclick="pressKey(8)">8</button>
+            <button class="key" onclick="pressKey(9)">9</button>
+            <button class="key" onclick="pressKey('*')">*</button>
+            <button class="key" onclick="pressKey(0)">0</button>
+            <button class="key" onclick="pressKey('#')">#</button>
+        </div>
+    </div>
+
+    <div id="screen-dialog" class="screen">
+        <div class="dialog-container">
+            <div class="avatar-box">
+    <!-- Указали правильный ID и существующую картинку -->
+    <img id="dialog-avatar" src="assets/avatar-idle.png" alt="My Avatar" style="width: 150px; height: 150px; object-fit: contain; margin-bottom: 20px;"> 
+</div>
+            <div class="speech-bubble">
+                <span id="typewriter-text"></span>
+                <div class="next-arrow" id="next-dialog" onclick="switchScreen('screen-start')">▼</div>
+            </div>
+        </div>
+    </div>
+
+    <div id="screen-start" class="screen">
+        <div class="hp-bar">⋆˙⟡♡</div>
+        <h1 class="title">HAPPY BIRTHDAY<br><br>&<br><br>ANNIVERSARY, LOVE!</h1>
+        
+        <!-- НОВЫЙ БЛОК: Ретро-загрузка вместо картинки -->
+        <div class="loading-container" style="margin-bottom: 30px; text-align: center;">
+            <div class="retro-spinner"></div>
+            <div class="blink-text">SYSTEM READY...</div>
+        </div>
+        
+        <button class="start-btn" onclick="switchScreen('screen-gifts')">START</button>
+    </div>
+    
+    <div id="screen-gifts" class="screen">
+        <h2 style="font-size: 16px; margin-bottom: 20px;">Выбери свой подарок</h2>
+        <div class="gifts-row">
+            <div class="gift" onclick="openGift(1, this)">
+                <img src="assets/box-closed.png" alt="Gift 1" onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSI4MCIgaGVpZ2h0PSI4MCIgdmlld0JveD0iMCAwIDgwIDgwIj48cmVjdCB3aWR0aD0iMTAwJSIgaGVpZ2h0PSIxMDAlIiBmaWxsPSIjOTMyMjc0Ii8+PHRleHQgeD0iNTAlIiB5PSI1MCUiIGZpbGw9IndoaXRlIiBmb250LWZhbWlseT0ic2Fucy1zZXJpZiIgZm9udC1zaXplPSIxMiIgZHk9Ii4zZW0iIHRleHQtYW5jaG9yPSJtaWRkbGUiPkJPWDwvdGV4dD48L3N2Zz4='">
+            </div>
+            <div class="gift" onclick="openGift(2, this)">
+                <img src="assets/box-closed.png" alt="Gift 2" onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSI4MCIgaGVpZ2h0PSI4MCIgdmlld0JveD0iMCAwIDgwIDgwIj48cmVjdCB3aWR0aD0iMTAwJSIgaGVpZ2h0PSIxMDAlIiBmaWxsPSIjOTMyMjc0Ii8+PHRleHQgeD0iNTAlIiB5PSI1MCUiIGZpbGw9IndoaXRlIiBmb250LWZhbWlseT0ic2Fucy1zZXJpZiIgZm9udC1zaXplPSIxMiIgZHk9Ii4zZW0iIHRleHQtYW5jaG9yPSJtaWRkbGUiPkJPWDwvdGV4dD48L3N2Zz4='">
+            </div>
+            <div class="gift" onclick="openGift(3, this)">
+                <img src="assets/box-closed.png" alt="Gift 3" onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSI4MCIgaGVpZ2h0PSI4MCIgdmlld0JveD0iMCAwIDgwIDgwIj48cmVjdCB3aWR0aD0iMTAwJSIgaGVpZ2h0PSIxMDAlIiBmaWxsPSIjOTMyMjc0Ii8+PHRleHQgeD0iNTAlIiB5PSI1MCUiIGZpbGw9IndoaXRlIiBmb250LWZhbWlseT0ic2Fucy1zZXJpZiIgZm9udC1zaXplPSIxMiIgZHk9Ii4zZW0iIHRleHQtYW5jaG9yPSJtaWRkbGUiPkJPWDwvdGV4dD48L3N2Zz4='">
+            </div>
+        </div>
+    </div>
+
+    <div id="modal-overlay" class="modal-overlay">
+        
+        <div id="modal-letter" class="modal-content" style="display: none;">
+            <button class="close-btn" onclick="closeModal()">X</button>
+            <div class="letter-content">
+                Любимый!<br><br>
+                Прошёл целый год. Но одно в моем сердце осталось неизменным: я очень сильно тебя люблю. И люблю так сильно, милый — сильнее, чем ты когда-либо сможешь осознать.
+​Ты знаешь, наша встреча была случайной. Я теряла всякую надежду. Но ты зажег меня изнутри. С тобой страхи постепенно потеряли значение. Я мечтала ощутить постоянство, и вот мы здесь. В нашей квартире. И ты читаешь это письмо.
+В такие моменты хочется верить в судьбу.<br><br>
+​А вообще, мы много прожили. Я знаю, что не всегда веду себя правильно. Но хочу, чтобы ты никогда не сомневался: мои чувства к тебе — самое искреннее, что у меня есть. Каждый день я выбираю тебя. Не по инерции, не потому что так надо, а потому что ты единственный человек из миллиардов, с кем я хочу делить эту жесть. Ты настолько гармонично вписался в мой жизненный беспорядок, что теперь я не представляю свою экосистему без твоего смеха, твоих странных, но таких родных привычек и наших рассуждений о всякой ерунде. Твой долгий сон, наши совместные прохождения игр, срывы на гадости из доставки и спонтанные прогулки до водохранилища. Из этого построился мой самый любимый дом. И дом — это ты.<br><br>
+​А ведь как будто вчера мы ныли: "Блииин, опять по домам. Опять на Пацаева, опять в общагу. Ах вот бы, вот бы каждый день просыпаться и видеть друг друга рядом с собой..."? Тогда я не могла в это поверить, а теперь это уютная реальность. И наши масштабы растут. Теперь мы позволяем себе представлять квартиру получше и даже думать, какие имена для детей более хайповые.<br><br>
+​Ты — мой главный оплот, мой баланс и мой самый близкий человек. Обожаю тебя, кися! Каждую минуту, каждое 11 число, каждый год!
+            </div>
+        </div>
+
+      <!-- Подарок 2: Интерактивный Альбом (Скрапбук) -->
+        <div id="modal-photos" class="modal-content" style="display: none; background: #fff5e6; border: 4px solid #8d6e63; max-width: 450px; overflow: hidden;">
+            <button class="close-btn" onclick="closeModal()">X</button>
+            <h3 style="text-align: center; color: #5d4037; margin-bottom: 15px; font-size: 14px;">Наша История</h3>
+            
+            <div class="album-container">
+                <!-- Картинка текущей страницы с лупой -->
+                <div class="album-page">
+                    <img id="album-img" src="assets/page-1.png" alt="Album Page" onclick="toggleAlbumZoom(this)" onerror="this.src='https://via.placeholder.com/400x400?text=Страница+1'">
+                </div>
+                
+                <!-- Подпись к странице -->
+                <div id="album-caption" style="text-align: center; font-size: 10px; color: #5d4037; margin: 15px 0; min-height: 25px; line-height: 1.4;">
+                    Знакомство и много-много чата
+                </div>
+
+                <div class="album-controls" style="display: flex; justify-content: space-between; align-items: center; width: 100%;">
+                    <button onclick="prevPage()" class="album-btn">◀ Назад</button>
+  
+                    <button onclick="nextPage()" class="album-btn">Далее ▶</button>
+                </div>
+            </div>
+        </div>
+
+        <div id="modal-music" class="modal-content" style="display: none; background: #673ab7; color: white;">
+            <button class="close-btn" onclick="closeModal()">X</button>
+<div class="player-container">
+    
+    <!-- Проигрыватель теперь работает как ссылка на Яндекс Музыку -->
+    <a href="https://music.yandex.ru/playlists/52df3182-9c40-36cc-a02b-329a4224b14a?utm_medium=copy_link&ref_id=cab8131d-74e3-4498-acda-d83d340bfae2" target="_blank" class="turntable-link" title="Слушать плейлист">
+        <div class="turntable">
+            <img src="assets/cover.png" alt="Album Cover" class="album-cover" id="vinyl">
+            <div class="tonearm"></div>
+        </div>
+    </a>
+
+    <!-- LED-экранчик -->
+    <div class="led-screen">
+        <div class="eq-bars">
+            <span class="bar"></span><span class="bar"></span><span class="bar"></span><span class="bar"></span>
+        </div>
+        <div class="marquee-container">
+            <div class="track-name">▶ NOW PLAYING: Я искал тебя</div>
+        </div>
+    </div>
+
+    <!-- Прогресс-бар -->
+    <div class="progress-bar-container">
+        <div class="progress-fill" id="progress-fill">
+            <div class="progress-thumb"></div>
+        </div>
+    </div>
+
+    <!-- Возвращаем только 2 основные кнопки -->
+    <div class="controls">
+        <button id="btn-play">▶ PLAY</button>
+        <button id="btn-pause">⏸ PAUSE</button>
+    </div>
+</div>
+<!-- Скрытые аудиоплееры -->
+    <audio id="sfx-click" src="assets/click.mp3"></audio>
+    <audio id="sfx-success" src="assets/success.mp3"></audio>
+    <audio id="gift-song" src="assets/song.mp3"></audio>
+    <!-- ФОНОВАЯ МУЗЫКА -->
+    <audio id="bg-music" src="assets/bg-music.mp3" loop></audio>
+    <script src="script.js"></script>
+</body>
+</html>

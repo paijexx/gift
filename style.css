@@ -1,0 +1,588 @@
+:root {
+    /* Идеальная палитра Vice City Vaporwave[span_15](start_span)[span_15](end_span) */
+    --bg-dark: #0b0f2b; /* Ocean Night */
+    --primary: #ff5ca8; /* Sunset Pink */
+    --accent-cyan: #00f0ff; /* Vice Cyan */
+    --accent-purple: #bc6cff; /* Neon Purple */
+    --accent-peach: #ffb86b; /* Miami Peach */
+    
+    --text-color: #0b0f2b; /* Текст в окнах делаем темным, как в старых ОС */
+    --box-bg: #c0c0c0; /* Классический серый цвет Windows 95[span_16](start_span)[span_16](end_span) */
+    
+    /* Брутальная ретро-рамка для окон (выпуклая) */
+    --win95-border: inset -2px -2px #0a0a0a, inset 2px 2px #ffffff, inset -4px -4px #808080, inset 4px 4px #dfdfdf;
+}
+
+/* --- МАГИЯ: Прячем ползунки, убираем выделение и ставим БАЗОВЫЙ КУРСОР --- */
+::-webkit-scrollbar {
+    display: none; 
+}
+
+* { 
+    margin: 0; padding: 0; box-sizing: border-box; 
+    -ms-overflow-style: none;  
+    scrollbar-width: none;     
+    user-select: none; 
+    -webkit-user-select: none;
+    cursor: url('assets/cursor.png'), auto !important; 
+}
+
+/* --- КУРСОР ДЛЯ КНОПОК --- */
+button, .gift, #lock-avatar, .couple-img-container, .key, .close-btn, .album-page img, .next-arrow {
+    cursor: url('assets/cursor-hover.png'), pointer !important;
+}
+
+/* --- ЭФФЕКТ ВИНЬЕТКИ (ТЕМНЫЕ УГЛЫ) --- */
+body::before {
+    content: "";
+    position: fixed;
+    top: 0; left: 0; width: 100vw; height: 100vh;
+    /* Создаем мягкую тень, которая сгущается к краям */
+    background: radial-gradient(circle, transparent 50%, rgba(0, 0, 0, 0.7) 120%);
+    pointer-events: none; /* Пропускаем клики мышки насквозь */
+    z-index: 9998; /* Кладем этот слой почти на самый верх, под полосы */
+}
+/* --- ЭФФЕКТ СТАРОГО МОНИТОРА (ТЕПЕРЬ ПОДВИЖНЫЙ) --- */
+body::after {
+    content: "";
+    position: fixed;
+    top: 0; left: 0; width: 100vw; height: 100vh;
+    background: linear-gradient(rgba(255,255,255,0) 50%, rgba(0, 0, 0, 0.1) 50%);
+    background-size: 100% 4px;
+    pointer-events: none; 
+    z-index: 9999;
+    /* МАГИЯ: запускаем бесконечное движение полос вниз */
+    animation: scanlineScroll 10s linear infinite; 
+}
+
+/* Ключевые кадры для движения полос */
+@keyframes scanlineScroll {
+    0% { background-position: 0 0; }
+    100% { background-position: 0 100px; } /* Плавный сдвиг вниз */
+}
+
+body {
+    font-family: 'Press Start 2P', cursive;
+    background-color: var(--bg-dark);
+    
+    /* Делаем атмосферную ретро-сетку (Grid) на глубоком фиолетовом фоне[span_17](start_span)[span_17](end_span)[span_18](start_span)[span_18](end_span) */
+    background-image: 
+        linear-gradient(rgba(188, 108, 255, 0.2) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(188, 108, 255, 0.2) 1px, transparent 1px);
+    background-size: 40px 40px;
+    background-position: center center;
+    
+    color: var(--accent-cyan); /* Светящийся голубой текст для главного экрана */
+    text-shadow: 2px 2px 0px #ff5ca8; /* Розовая тень в стиле Y2K[span_19](start_span)[span_19](end_span)[span_20](start_span)[span_20](end_span) */
+    
+    height: 100vh;
+    overflow: hidden;
+    position: relative;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+/* МАГИЯ ПЕРЕЛИВАНИЯ ФОНА */
+@keyframes gradientBG {
+    0% { background-position: 0% 50%; }
+    50% { background-position: 100% 50%; }
+    100% { background-position: 0% 50%; }
+}
+
+#bg-layer {
+    position: absolute;
+    top: 0; left: 0; width: 100%; height: 100%;
+    background: url('assets/bg.png') center/cover no-repeat;
+    opacity: 0.5;
+    z-index: -2;
+}
+
+.star {
+    position: absolute;
+    background: rgb(216, 209, 235);
+    width: 4px; height: 4px; /* Чуть увеличили, чтобы квадратики было видно */
+    /* Никаких скруглений и теней — чистый пиксель-арт! */
+    animation: twinkle linear infinite;
+    z-index: -1;
+    opacity: 0;
+}
+
+@keyframes twinkle {
+    0% { opacity: 0; transform: scale(0.5) translateY(0); }
+    50% { opacity: 1; transform: scale(1.2) translateY(-15px); }
+    100% { opacity: 0; transform: scale(0.5) translateY(-30px); }
+}
+
+.screen {
+    display: none;
+    width: 90%; max-width: 500px;
+    height: 90vh; max-height: 800px;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    position: relative;
+    z-index: 10;
+}
+
+.screen.active {
+    display: flex;
+    animation: fadeIn 0.5s ease-in-out forwards;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; transform: scale(0.95); }
+    to { opacity: 1; transform: scale(1); }
+}
+
+.password-display {
+    font-size: 24px; letter-spacing: 15px; margin-bottom: 30px;
+    text-align: center; height: 30px;
+}
+.keypad {
+    display: grid; grid-template-columns: repeat(3, 1fr); gap: 15px;
+}
+
+/* --- ТАКТИЛЬНЫЕ КНОПКИ ПАРОЛЯ --- */
+.key {
+    width: 60px; height: 60px;
+    background: var(--primary);
+    color: white; border: var(--pixel-border);
+    font-family: inherit; font-size: 20px;
+    display: flex; justify-content: center; align-items: center;
+    box-shadow: 4px 4px 0px rgba(0, 0, 0, 0.7);
+    transition: transform 0.1s, box-shadow 0.1s;
+}
+.key:active { 
+    transform: translate(4px, 4px) !important; 
+    box-shadow: 0px 0px 0px rgba(0, 0, 0, 0.7) !important; 
+}
+
+.error-shake { animation: shake 0.4s; color: red; }
+.success-glow { 
+    color: #880e4f; 
+    text-shadow: 0 0 10px rgba(216, 27, 96, 0.5); 
+    font-size: 18px; 
+    letter-spacing: 6px; 
+}
+
+@keyframes shake {
+    0%, 100% { transform: translateX(0); }
+    25% { transform: translateX(-10px); }
+    75% { transform: translateX(10px); }
+}
+
+.dialog-container {
+    display: flex; flex-direction: column; align-items: center; width: 100%;
+}
+.avatar-box img { width: 150px; height: 150px; object-fit: contain; margin-bottom: 20px; }
+
+.speech-bubble {
+    background: var(--box-bg); padding: 20px;
+    border: var(--pixel-border); border-radius: 10px;
+    width: 100%; position: relative;
+    /* ИСПРАВЛЕНИЕ: Делаем текст темным, чтобы он читался на сером фоне */
+    color: #0b0f2b; 
+    font-weight: bold;
+    text-shadow: none;
+    font-size: 12px; line-height: 1.8; min-height: 120px;
+    box-shadow: 6px 6px 0px rgba(0, 0, 0, 0.7); 
+}
+.speech-bubble::before {
+    content: ''; position: absolute;
+    top: -20px; left: 50%; transform: translateX(-50%);
+    border-width: 10px; border-style: solid;
+    border-color: transparent transparent var(--text-color) transparent;
+}
+.next-arrow {
+    position: absolute; 
+    bottom: 15px; 
+    right: 20px;
+    font-size: 24px; /* Делаем стрелочку БОЛЬШОЙ */
+    color: var(--primary); /* Красим в наш фирменный розовый цвет */
+    animation: blink 1s infinite;
+    display: none;
+    transition: transform 0.1s; /* Плавность для нажатия */
+}
+
+/* Эффект тактильного нажатия для стрелочки */
+.next-arrow:active {
+    transform: translateY(4px); 
+}
+@keyframes blink { 0%, 100% { opacity: 1; } 50% { opacity: 0; } }
+
+.hp-bar {
+    position: absolute; top: 20px; left: 20px;
+    font-size: 20px; color: var(--primary);
+}
+.title { font-size: 18px; text-align: center; margin-bottom: 30px; line-height: 1.5; text-shadow: 2px 2px white; }
+.couple-img-container { position: relative; margin-bottom: 30px; }
+.couple-img-container img { width: 250px; height: 250px; object-fit: contain; }
+
+/* --- ТАКТИЛЬНАЯ КНОПКА СТАРТ --- */
+.start-btn {
+    padding: 15px 30px; font-family: inherit; font-size: 16px;
+    background: #ffeb3b; border: var(--pixel-border);
+    color: var(--text-color); 
+    box-shadow: 6px 6px 0px rgba(0, 0, 0, 0.7);
+    transition: transform 0.1s, box-shadow 0.1s;
+}
+.start-btn:active {
+    transform: translate(4px, 4px) !important; 
+    box-shadow: 0px 0px 0px rgba(0, 0, 0, 0.7) !important;
+}
+
+.floating-heart {
+    position: absolute; font-size: 16px; color: var(--primary);
+    pointer-events: none; animation: floatUp 1s forwards;
+}
+@keyframes floatUp {
+    0% { transform: translate(-50%, 0) scale(0.5); opacity: 1; }
+    100% { transform: translate(-50%, -50px) scale(1.5); opacity: 0; }
+}
+
+.gifts-row {
+    display: flex; 
+    justify-content: center; 
+    gap: 40px; /* Сделали расстояние между коробками побольше */
+    margin-top: 40px;
+}
+
+.gift { 
+    width: 130px; /* Было 80px, стало 130px */
+    height: 130px; 
+    transition: transform 0.2s; 
+}
+
+.gift:hover { 
+    animation: wiggle 0.5s infinite; 
+}
+
+.gift img { 
+    width: 100%; 
+    height: 100%; 
+    object-fit: contain; 
+}
+@keyframes wiggle {
+    0%, 100% { transform: rotate(0); }
+    25% { transform: rotate(-10deg); }
+    75% { transform: rotate(10deg); }
+}
+
+.modal-overlay {
+    position: absolute; top: 0; left: 0; width: 100%; height: 100%;
+    background: rgba(0, 0, 0, 0.8);
+    display: none; justify-content: center; align-items: center;
+    z-index: 100;
+}
+.modal-overlay.active { display: flex; }
+
+* --- ОКНА В СТИЛЕ WINDOWS 95[span_23](start_span)[span_23](end_span)[span_24](start_span)[span_24](end_span) --- */
+.modal-content {
+    background: var(--box-bg); 
+    color: var(--text-color);
+    box-shadow: var(--win95-border), 10px 10px 0px rgba(0, 0, 0, 0.5); 
+    width: 90%; 
+    max-width: 450px; 
+    max-height: 80vh;
+    padding: 2px; /* Оставляем место для синей шапки окна */
+    position: relative; 
+    overflow-y: auto; 
+    overflow-x: hidden; 
+}
+
+/* Имитация синей "шапки" окна сверху */
+.modal-content::before {
+    content: "VIEWER.EXE";
+    display: block;
+    background: #000080; /* Глубокий синий */
+    color: white;
+    font-size: 10px;
+    padding: 5px 8px;
+    margin-bottom: 15px;
+    text-shadow: none;
+    letter-spacing: 1px;
+}
+
+/* Кнопка закрытия в стиле старой ОС */
+.close-btn {
+    position: absolute;
+    top: 4px; right: 4px; 
+    background: #c0c0c0;
+    color: black;
+    box-shadow: inset -1px -1px #0a0a0a, inset 1px 1px #ffffff, inset -2px -2px #808080, inset 2px 2px #dfdfdf;
+    border: none; 
+    width: 20px; height: 20px;
+    font-size: 12px; font-family: inherit;
+    font-weight: bold;
+    display: flex; justify-content: center; align-items: center;
+    z-index: 110;
+    text-shadow: none;
+}
+.close-btn:active {
+    box-shadow: inset -1px -1px #ffffff, inset 1px 1px #0a0a0a, inset -2px -2px #dfdfdf, inset 2px 2px #808080;
+    padding-top: 2px; padding-left: 2px;
+}
+
+.letter-content {
+    background: #fff9c4; 
+    background-image: url('assets/letter-bg.png');
+    text-shadow: none;
+    background-size: cover; background-position: center;
+    padding: 30px; font-size: 10px; line-height: 2;
+    color: #3e2723; border: 2px solid #8d6e63;
+}
+
+.player-container { text-align: center; }
+/* --- СТИЛИ ВИНИЛА --- */
+.album-cover {
+    width: 150px; height: 150px; object-fit: cover;
+    border: var(--pixel-border); 
+    border-radius: 50%; /* Делаем круглую пластинку! */
+    display: block;
+    margin: 0 auto 20px auto;
+    box-shadow: 6px 6px 0px rgba(0, 0, 0, 0.7);
+    transition: transform 0.2s;
+}
+
+/* Дырочка в центре винила */
+.vinyl-hole {
+    position: absolute;
+    top: 50%; left: 50%;
+    transform: translate(-50%, -100%); 
+    width: 20px; height: 20px;
+    background: var(--bg-pink); /* Просвечивает фон окна */
+    border: 3px solid var(--text-color);
+    border-radius: 50%;
+    z-index: 5;
+}
+
+/* АНИМАЦИЯ ВРАЩЕНИЯ */
+.spinning {
+    animation: spinVinyl 4s linear infinite;
+}
+
+@keyframes spinVinyl {
+    100% { transform: rotate(360deg); }
+}
+/* --- ЭСТЕТИКА ПЛЕЕРА --- */
+
+/* 1. Квадратный корпус проигрывателя */
+.turntable {
+    position: relative; 
+    display: inline-block;
+    background: #d7ccc8; /* Ретро-бежевый цвет пластика */
+    padding: 20px 45px 20px 20px; /* Справа оставили место под иголку */
+    border-radius: 10px;
+    border: var(--pixel-border);
+    box-shadow: inset -4px -4px 0px rgba(0,0,0,0.1), 6px 6px 0px rgba(0, 0, 0, 0.7);
+    margin-bottom: 20px;
+}
+
+/* Физический тонарм (иголка) */
+.tonearm {
+    position: absolute;
+    top: 30px;
+    right: 20px;
+    width: 8px;
+    height: 80px;
+    background: #bdc3c7;
+    border: 2px solid #000;
+    border-radius: 4px;
+    transform-origin: top center;
+    transform: rotate(35deg); /* Повернут прямо на пластинку */
+    box-shadow: 3px 3px 0px rgba(0,0,0,0.4);
+    z-index: 10;
+    pointer-events: none; 
+}
+/* Основание иголки */
+.tonearm::before {
+    content: ''; position: absolute;
+    top: -10px; left: -6px;
+    width: 16px; height: 16px;
+    background: #7f8c8d;
+    border: 2px solid #000; border-radius: 50%;
+}
+/* Сама головка звукоснимателя */
+.tonearm::after {
+    content: ''; position: absolute;
+    bottom: -5px; left: -4px;
+    width: 12px; height: 18px;
+    background: #34495e;
+    border: 2px solid #000; border-radius: 2px;
+}
+
+/* 2. LED Экран */
+.led-screen {
+    background: #111;
+    border: var(--pixel-border);
+    padding: 10px;
+    margin-bottom: 20px;
+    box-shadow: inset 4px 4px 10px rgba(0,0,0,0.8);
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    height: 45px;
+}
+
+/* Розовый прыгающий эквалайзер */
+.eq-bars { display: flex; gap: 3px; align-items: flex-end; height: 15px; flex-shrink: 0; }
+.bar { width: 5px; background: #ff7eb3; animation: eqBounce 0.5s infinite alternate ease-in; }
+.bar:nth-child(2) { animation-delay: 0.1s; }
+.bar:nth-child(3) { animation-delay: 0.3s; }
+.bar:nth-child(4) { animation-delay: 0.2s; }
+
+@keyframes eqBounce { 0% { height: 3px; } 100% { height: 15px; } }
+
+/* Контейнер для бегущей строки (чтобы не ломалась) */
+.marquee-container {
+    flex-grow: 1;
+    overflow: hidden;
+    white-space: nowrap;
+    position: relative;
+}
+
+/* Розовая бегущая строка (чистый CSS, 100% работает) */
+.track-name { 
+    display: inline-block;
+    color: #ff7eb3; /* Наш фирменный розовый неон */
+    font-size: 10px; 
+    text-shadow: 0 0 5px rgba(255, 126, 179, 0.6);
+    margin: 0;
+    padding-left: 100%; /* Начинает движение из-за правого края */
+    animation: scrollText 10s linear infinite;
+}
+
+@keyframes scrollText {
+    0% { transform: translateX(0); }
+    100% { transform: translateX(-100%); }
+}
+/* Ползунок прогресса (апгрейд старого) */
+.progress-bar-container {
+    width: 100%; height: 14px; 
+    background: #222; 
+    border: var(--pixel-border);
+    margin: 15px 0 25px 0;
+    box-shadow: inset 2px 2px 5px rgba(0,0,0,0.8);
+}
+.progress-fill { 
+    height: 100%; 
+    background: #ffeb3b; /* Ярко-желтая полоска */
+    width: 0%; 
+    transition: width 0.1s linear; 
+    position: relative;
+}
+/* Сам квадратик, который едет */
+.progress-thumb {
+    position: absolute;
+    right: -8px; top: -6px;
+    width: 16px; height: 22px;
+    background: #ddd;
+    border: 3px solid #000;
+    box-shadow: 2px 2px 0px rgba(0,0,0,0.5);
+}/* --- КОНТРОЛЛЕРЫ ПЛЕЕРА --- */
+.controls { 
+    display: flex; 
+    justify-content: center; 
+    gap: 25px; /* РАЗДВИГАЕМ КНОПКИ */
+    margin-top: 20px; 
+}
+.controls button {
+    background: var(--primary); color: white; border: var(--pixel-border);
+    padding: 10px 15px; font-family: inherit; 
+    box-shadow: 4px 4px 0px rgba(0, 0, 0, 0.7);
+    transition: transform 0.1s, box-shadow 0.1s;
+}
+.controls button:active {
+    transform: translate(4px, 4px) !important; 
+    box-shadow: 0px 0px 0px rgba(0, 0, 0, 0.7) !important;
+}
+
+/* Полоска прогресса */
+.progress-bar-container {
+    width: 100%; height: 10px; 
+    background: rgba(0,0,0,0.4); 
+    border: 2px solid var(--text-color);
+    margin: 15px 0; /* Отступы сверху и снизу */
+}
+.progress-fill { height: 100%; background: var(--primary); width: 0%; transition: width 0.1s linear; }
+/* --- 3D ИНТЕРАКТИВНЫЙ АЛЬБОМ --- */
+.album-container { 
+    display: flex; flex-direction: column; align-items: center; width: 100%; 
+    perspective: 1000px; 
+}
+
+.album-page {
+    width: 100%; background: white; padding: 10px 10px 20px 10px;
+    border: 1px solid #ddd; margin-bottom: 10px; 
+    transition: transform 0.3s ease-in-out, opacity 0.3s ease-in-out;
+    transform-origin: center;
+    box-shadow: 6px 6px 0px rgba(0, 0, 0, 0.7); /* Тень для альбома */
+}
+
+.album-page.turning { transform: rotateY(-90deg); opacity: 0; }
+
+.album-page img { 
+    width: 100%; max-height: 50vh; height: auto; object-fit: contain; 
+    border-radius: 2px; transition: transform 0.3s ease-in-out;
+}
+
+/* Зум картинки */
+.zoomed-album {
+    position: fixed !important; top: 50% !important; left: 50% !important;
+    transform: translate(-50%, -50%) scale(1.8) !important; 
+    z-index: 9999 !important;
+    box-shadow: 0 0 0 100vw rgba(0,0,0,0.85) !important; 
+    max-height: 90vh !important;
+}
+
+/* --- ТАКТИЛЬНЫЕ КНОПКИ АЛЬБОМА --- */
+.album-btn {
+    background: var(--primary); color: white; border: var(--pixel-border);
+    padding: 8px 12px; font-family: inherit; font-size: 10px;
+    box-shadow: 4px 4px 0px rgba(0, 0, 0, 0.7);
+    transition: transform 0.1s, box-shadow 0.1s;
+}
+.album-btn:active { 
+    transform: translate(4px, 4px) !important; 
+    box-shadow: 0px 0px 0px rgba(0, 0, 0, 0.7) !important; 
+}
+/* --- СЛЕД ОТ КУРСОРА --- */
+.trail-particle {
+    position: fixed; 
+    pointer-events: none; /* Чтобы след не мешал кликать на кнопки */
+    z-index: 99999; /* Поверх всех окон и фонов */
+    font-size: 10px; /* Размер частицы */
+    animation: trailFade 0.8s linear forwards;
+}
+
+/* Анимация: частица падает вниз, уменьшается и растворяется */
+@keyframes trailFade {
+    0% { opacity: 1; transform: scale(1) translateY(0); }
+    100% { opacity: 0; transform: scale(0.2) translateY(25px); }
+}
+
+/* --- АНИМАЦИЯ ЗАГРУЗКИ --- */
+.retro-spinner {
+    width: 40px; height: 40px;
+    border: 4px solid var(--bg-dark);
+    border-top: 4px solid var(--primary);
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+    margin: 0 auto 15px;
+}
+@keyframes spin { 100% { transform: rotate(360deg); } }
+.blink-text { color: var(--accent-cyan); font-size: 10px; animation: blink 1s infinite; }
+/* --- КЛИКАБЕЛЬНЫЙ ПРОИГРЫВАТЕЛЬ --- */
+.turntable-link {
+    text-decoration: none;
+    display: inline-block;
+    cursor: url('assets/cursor-hover.png'), pointer !important; /* Кастомный курсор при наведении */
+}
+
+/* Добавляем легкое розовое свечение и увеличение при наведении */
+.turntable-link:hover .turntable {
+    transform: scale(1.02);
+    box-shadow: inset -4px -4px 0px rgba(0,0,0,0.1), 6px 6px 0px rgba(0, 0, 0, 0.7), 0 0 20px var(--primary);
+    transition: all 0.2s ease;
+}
